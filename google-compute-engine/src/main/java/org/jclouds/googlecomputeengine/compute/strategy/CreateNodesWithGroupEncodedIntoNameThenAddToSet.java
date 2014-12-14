@@ -107,6 +107,7 @@ public final class CreateNodesWithGroupEncodedIntoNameThenAddToSet extends
       templateOptions.network(network.selfLink());
       templateOptions.userMetadata(ComputeServiceConstants.NODE_GROUP_KEY, group);
 
+      System.out.println("GROUP REQUESTED: " + group);
       return super.execute(group, count, mutableTemplate, goodNodes, badNodes, customizationResponses);
    }
 

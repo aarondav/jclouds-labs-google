@@ -64,6 +64,11 @@ public final class InstanceToNodeMetadata implements Function<Instance, NodeMeta
 
    @Override public NodeMetadata apply(Instance input) {
       String group = groupFromMapOrName(input.metadata().asMap(), input.name(), nodeNamingConvention);
+      System.out.println("Groupity!! " + group + " / ((((" + input + ")))) / " + input.metadata().asMap());
+      System.out.println();
+      if (group == null) {
+          group = "test-group";
+      }
       Predicate<String> isFirewallTag = firewallTagNamingConvention.get(group).isFirewallTag();
       if (group != null) {
          for (Iterator<String> tag = input.tags().items().iterator(); tag.hasNext(); ) {

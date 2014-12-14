@@ -22,7 +22,6 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jclouds.googlecomputeengine.domain.Instance.NetworkInterface.AccessConfig;
 import org.jclouds.googlecomputeengine.domain.Instance.Scheduling;
 import org.jclouds.googlecomputeengine.domain.Instance.ServiceAccount;
 import org.jclouds.javax.annotation.Nullable;
@@ -34,19 +33,34 @@ import com.google.common.collect.ImmutableList;
 /** Parameter to {@linkplain org.jclouds.googlecomputeengine.features.InstanceApi#create(NewInstance)}. */
 @AutoValue
 public abstract class NewInstance {
+  @AutoValue
+  abstract static class NewAccessConfig {
+      abstract String kind();
+      abstract String type();
+      abstract String name();
+
+      static NewAccessConfig create() {
+          return new AutoValue_NewInstance_NewAccessConfig("compute#accessConfig", "ONE_TO_ONE_NAT", "EXTERNAL_NAT");
+      }
+
+      NewAccessConfig() { }
+  }
+
    @AutoValue
    abstract static class NetworkInterface {
       abstract URI network();
 
-      abstract List<AccessConfig.Type> accessConfigs();
+      abstract String name();
+
+      abstract List<NewAccessConfig> accessConfigs();
 
       static NetworkInterface create(URI network) {
-         return create(network, Arrays.asList(AccessConfig.Type.ONE_TO_ONE_NAT));
+        return create(network, "External NAT", Arrays.asList(NewAccessConfig.create()));
       }
 
-      @SerializedNames({ "network", "accessConfigs" })
-      static NetworkInterface create(URI network, List<AccessConfig.Type> accessConfigs) {
-         return new AutoValue_NewInstance_NetworkInterface(network, accessConfigs);
+     @SerializedNames({ "network", "name", "accessConfigs" })
+     static NetworkInterface create(URI network, String name, List<NewAccessConfig> accessConfigs) {
+         return new AutoValue_NewInstance_NetworkInterface(network, name, accessConfigs);
       }
 
       NetworkInterface() {
@@ -96,7 +110,9 @@ public abstract class NewInstance {
       "serviceAccounts", "scheduling" })
    static NewInstance create(String name, URI machineType, Boolean canIpForward, List<NetworkInterface> networkInterfaces,
          List<AttachDisk> disks, String description, Tags tags, Metadata metadata, List<ServiceAccount> serviceAccounts, Scheduling scheduling) {
-      return new AutoValue_NewInstance(name, machineType, canIpForward, networkInterfaces, disks, description, tags, metadata, serviceAccounts, scheduling);
+      AutoValue_NewInstance inst = new AutoValue_NewInstance(name, machineType, canIpForward, networkInterfaces, disks, description, tags, metadata, serviceAccounts, scheduling);
+      System.out.println("NEW INSTANCE REQUEST: " + inst);
+      return inst;
    }
 
    NewInstance() {

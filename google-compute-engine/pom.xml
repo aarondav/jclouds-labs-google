@@ -29,6 +29,7 @@
     <!-- TODO: when out of labs, switch to org.jclouds.provider -->
     <groupId>org.apache.jclouds.labs</groupId>
     <artifactId>google-compute-engine</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
     <name>jclouds Google Compute Engine provider</name>
     <description>jclouds components to access GoogleCompute</description>
 
@@ -52,13 +53,13 @@
         <dependency>
             <groupId>org.apache.jclouds.labs</groupId>
             <artifactId>googlecloud</artifactId>
-            <version>${project.version}</version>
+            <version>${jclouds.version}</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.apache.jclouds.labs</groupId>
             <artifactId>googlecloud</artifactId>
-            <version>${project.version}</version>
+            <version>${jclouds.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
